@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seminar Event Management System</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="static/style/style.css">
+</head>
+<body>
+  <style>
+  .flash-message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 20%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    z-index: 9999;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    transition: opacity 0.5s ease-out;
+  }
+  .alert-success { background-color: #28a745; }
+  .alert-info    { background-color: #17a2b8; }
+  .alert-warning { background-color: #ffc107; color: #212529; }
+  .alert-danger  { background-color: #dc3545; }
+</style>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div id="flash-container">
+      {% for category, message in messages %}
+        <div class="flash-message alert-{{ category }}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+    <script>
+      setTimeout(() => {
+        const flashes = document.querySelectorAll('.flash-message');
+        flashes.forEach(flash => {
+          flash.style.opacity = '0';
+          setTimeout(() => flash.remove(), 500);
+        });
+      }, 2000);  // 2 seconds
+    </script>
+  {% endif %}
+{% endwith %}
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center py-3">
+        <div class="logo-container">
+          <i class="fas fa-hands-holding-child logo-icon"></i>
+          <h1 class="site-title">Manage Your Seminars</h1>
+        </div>
+        <div class="d-flex">
+          <a href="{{ url_for('auth.login') }}" class="btn btn-outline-primary me-2">Log In</a>
+          <a href="{{ url_for('index.registration') }}" class="btn btn-primary">Registration</a>
+        </div>
+      </div>
+    </div>
+    
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav main-menu mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index.home_page') }}" id="homeNav">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index.event_details') }}" id="eventsNav">Seminar Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index.booking_history') }}" id="bookingHistoryNav">Booking History</a><li class="nav-item"><a class="nav-link" href="{{ url_for('index.about_us') }}" id="aboutUsNav">Get to Know Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('index.contact_us') }}" id="contactUsNav">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <script>
+      const navLinks = document.querySelectorAll('.nav-link');
+
+      navLinks.forEach(navLink => {
+        navLink.addEventListener('click', () => {
+          navLinks.forEach(link => link.classList.remove('active'));
+          navLink.classList.add('active');
+        });
+      });
+
+      const currentPath = window.location.pathname;
+      navLinks.forEach(navLink => {
+        if (navLink.getAttribute('href') === currentPath) {
+          navLink.classList.add('active');
+        }
+      });
+    </script>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section bg-primary text-black py-3" style="background-image: url('static/img/session.jpg');">
+    <div class="container text-center">
+      <h1 class="hero-title">Share your experience</h1>
+      <p class="hero-subtitle">Find and book tickets for the most exciting events happening around you</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container-fluid py-5">
+    <div class="row">
+      <!-- Main Content - Upcoming Events -->
+      <div class="col-md-8 offset-md-2 mb-5 mb-lg-0">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2 class="section-title">Upcoming Seminars</h2>
+          <a href="{{ url_for('index.create_event') }}" class="btn btn-light">
+            <i class="fas fa-plus me-2"></i> Organize a Seminar
+          </a>
+        </div>
+        
+        <div class="row g-4">
+          <!-- Event 1 -->
+          <div class="col-md-6">
+            <div class="card event-card">
+              <img src="static/img/seminar.jpg" class="card-img-top event-image" alt="Talk by the Author">
+              <div class="card-body">
+                <h3 class="card-title">Talk by the Author</h3>
+                <div class="event-meta">
+                  <i class="far fa-calendar"></i>
+                  <span>June 15, 2025</span>
+                </div>
+                <div class="event-meta">
+                  <i class="far fa-clock"></i>
+                  <span>18:00</span>
+                </div>
+                <div class="event-meta">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Central Theater</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <a href="{{ url_for('index.event_details') }}" class="btn btn-light">View Details</a>
+                  <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+                    <i class="fas fa-ticket-alt me-2"></i> Reserve Seat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Event 2 -->
+          <div class="col-md-6">
+            <div class="card event-card">
+              <img src="static/img/business-seminars-and-conferences.png" class="card-img-top event-image" alt="Learn how to learn">
+              <div class="card-body">
+                <h3 class="card-title">Learn how to learn</h3>
+                <div class="event-meta">
+                  <i class="far fa-calendar"></i>
+                  <span>May 22, 2025</span>
+                </div>
+                <div class="event-meta">
+                  <i class="far fa-clock"></i>
+                  <span>09:00</span>
+                </div>
+                <div class="event-meta">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Convention Center</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <a href="{{ url_for('index.event_details') }}" class="btn btn-light">View Details</a>
+                  <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+                    <i class="fas fa-ticket-alt me-2"></i> Reserve Seat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Event 3 -->
+          <div class="col-md-6">
+            <div class="card event-card">
+              <img src="static/img/conferences.jpg" class="card-img-top event-image" alt="Food & Wine Expo">
+              <div class="card-body">
+                <h3 class="card-title">Ted Talk</h3>
+                <div class="event-meta">
+                  <i class="far fa-calendar"></i>
+                  <span>May 10, 2025</span>
+                </div>
+                <div class="event-meta">
+                  <i class="far fa-clock"></i>
+                  <span>11:00</span>
+                </div>
+                <div class="event-meta">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Downtown Pavilion</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <a href="{{ url_for('index.event_details') }}" class="btn btn-light">View Details</a>
+                  <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+                    <i class="fas fa-ticket-alt me-2"></i> Reserve Seat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Event 4 -->
+          <div class="col-md-6">
+            <div class="card event-card">
+              <img src="static/img/banner.jpg" class="card-img-top event-image" alt="Photography Workshop">
+              <div class="card-body">
+                <h3 class="card-title">Financial Mindset</h3>
+                <div class="event-meta">
+                  <i class="far fa-calendar"></i>
+                  <span>June 5, 2025</span>
+                </div>
+                <div class="event-meta">
+                  <i class="far fa-clock"></i>
+                  <span>14:00</span>
+                </div>
+                <div class="event-meta">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <span>Arts Center</span>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                  <a href="{{ url_for('index.event_details') }}" class="btn btn-light">View Details</a>
+                  <button class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+                    <i class="fas fa-ticket-alt me-2"></i> Reserve Seat
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="text-center mt-5">
+          <a href="{{ url_for('index.event_details') }}" class="btn btn-light">View All Seminars</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Ticket Modal -->
+  <div class="modal fade" id="bookTicketModal" tabindex="-1" aria-labelledby="bookTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookTicketModalLabel">Book Tickets</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex mb-4">
+            <img src="static/img/socratic-seminars.jpeg" alt="Event" class="img-thumbnail me-3" style="width: 100px; height: 100px; object-fit: cover;">
+            <div>
+              <h5>Talk by the Author</h5>
+              <p class="small text-muted mb-0">June 15, 2025 at 18:00</p>
+              <p class="small text-muted">Central Park</p>
+            </div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="ticketQuantity" class="form-label">Number of Tickets</label>
+            <input type="number" class="form-control" id="ticketQuantity" min="1" max="10" value="1">
+            <div class="form-text">Maximum available: 263 tickets</div>
+          </div>
+          
+          <div class="mb-3">
+            <label for="ticketType" class="form-label">Ticket Type</label>
+            <select class="form-select" id="ticketType">
+              <option value="general">General Admission - $6.99</option>
+              <option value="vip">VIP Access - $9.99</option>
+              <option value="backstage">Backstage Pass - $49.99</option>
+            </select>
+          </div>
+          
+          <div class="mb-3">
+            <label for="attendeeEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="attendeeEmail" placeholder="your@email.com">
+          </div>
+          
+          <div class="alert alert-info">
+            <div class="d-flex">
+              <div class="me-3">
+                <i class="fas fa-info-circle fa-lg"></i>
+              </div>
+              <div>
+                <strong>Note:</strong> Tickets are non-refundable, but can be transferred to another person up to 48 hours before the event.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal" >Cancel</button>
+          <button type="button" class="btn btn-light">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" style="background-color: #114c86; padding: 20px 0;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h4 class="footer-heading">Manage Your Seminars</h4>
+          <div class="mt-4">
+            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="footer-heading">Contact Info</h5>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt me-2"></i> 123 Event Street, City</li>
+            <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+            <li><i class="fas fa-envelope me-2"></i> info@eventsystem.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center footer-bottom">
+        <p class="mb-0">&copy; 2025 Manage Your Seminars. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -124,6 +124,23 @@ def booking_history():
     
     return render_template('booking-history.html', tickets=tickets)
 
+  @app.route('/select-event', methods=['POST'])
+    def select_event(): 
+        selected_event = request.form.get('event_type')
+        
+        if selected_event == "Talk by the Author":
+            return redirect(url_for('seminar_talk_by_author'))
+        elif selected_event == "Learn how to learn":
+            return redirect(url_for('seminar_learn_how_to_learn'))
+        elif selected_event == "Ted Talk":
+            return redirect(url_for('seminar_ted_talk'))
+        elif selected_event == "Financial Mindset":
+            return redirect(url_for('seminar_financial_mindset'))
+        else:
+            flash("Please select a valid event type.")
+            return redirect(url_for('home_page'))
+            
+
 @index_bp.route('/logout')
 def logout():
     session.clear()

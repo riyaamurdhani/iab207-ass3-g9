@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Seminar Event Management System</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="static/style/style.css">
+</head>
+
+<body>
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container">
+      <div class="d-flex justify-content-between align-items-center py-3">
+        <div class="logo-container">
+          <i class="fas fa-hands-holding-child logo-icon"></i>
+          <h1 class="site-title">Manage Your Seminars</h1>
+        </div>
+        <div class="user-profile-btn" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fas fa-user"></i>
+        </div>
+        <ul class="dropdown-menu dropdown-menu-end">
+          <li>
+            <div class="dropdown-item-text">
+              <div class="fw-bold">Sonam Lhamo</div>
+              <div class="small text-muted">sonamlhamo871@gmail.com</div>
+            </div>
+          </li>
+          <li>
+            <hr class="dropdown-divider">
+          </li>
+          <li><a class="dropdown-item" href="#"><i class="fas fa-user-circle me-2"></i> Profile Settings</a></li>
+          <li><a class="dropdown-item" href="index.html"><i class="fas fa-sign-out-alt me-2"></i> Logout</a></li>
+        </ul>
+      </div>
+    </div>
+
+    
+    <nav class="navbar navbar-expand-lg">
+      <div class="container">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+          <ul class="navbar-nav main-menu mx-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('home_page') }}" id="homeNav">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('event_details') }}" id="eventsNav">Seminar Details</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('booking_history') }}" id="bookingHistoryNav">Booking History</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('about_us') }}" id="aboutUsNav">Get to Know Us</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{{ url_for('contact_us') }}" id="contactUsNav">Contact Us</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+
+  </header>
+
+  <div class="event-detail-banner card-img-top event-image"
+    style= "background-image: url('{{ url_for('static', filename='img/business-seminars-and-conferences.png') }}'); background-size: cover; background-position: center; height: 500px;">
+    <div class="event-detail-overlay">
+      <div class="container">
+        <h1 class="event-detail-title">Learn how to learn effectively</h1>
+        <div class="d-flex align-items-center mb-3">
+        </div>
+        <div class="d-flex align-items-center text-white">
+          <div class="me-4">
+            <i class="far fa-calendar me-2"></i> May 22, 2025
+          </div>
+          <div class="me-4">
+            <i class="far fa-clock me-2"></i> 9:00
+          </div>
+          <div>
+            <i class="fas fa-map-marker-alt me-2"></i> Convention Centre
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!-- Main Content -->
+  <div class="container py-5">
+    <div class="row">
+      <!-- Seminar Information -->
+      <div class="col-lg-8 mb-5 mb-lg-0">
+        <!-- Seminar Actions -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="section-title mb-0">Seminar Details</h2>
+          </div>
+        </div>
+
+        <!-- Seminar Description -->
+        <div class="mb-5">
+          <h3>About This Seminar</h3>
+
+
+          <p>Join us for an enlightening seminar that brings together leading experts from various fields to share
+            insights and knowledge. This event promises a valuable experience for student to know how to learn and gather content effectively.
+          </p>
+          <p>The seminar features an impressive lineup of speakers including who were past proffessors and lecturers who will share tips and tricks for 
+            students to learn.</p>
+          <p>In addition to the sessions, enjoy:</p>
+          <ul>
+            <li>Networking opportunities with industry leaders</li>
+            <li>Interactive workshops and Q&A sessions</li>
+            <li>Exhibition of the latest innovations and technologies</li>
+            <li>Relaxation areas for informal discussions</li>
+            <li>Access to seminar materials and resources</li>
+          </ul>
+          <p>Don't miss this exceptional event that has become a must-attend for those passionate about continuous
+            learning and professional development!</p>
+        </div>
+
+        <div class="d-flex flex-column flex-md-row align-items-center">
+          <button class="btn btn-outline-secondary me-2 mb-2 mb-md-0" data-bs-toggle="modal"
+            data-bs-target="#updateEventModal">
+            <i class="fas fa-edit me-2"></i> Update Seminar
+          </button>
+          <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+            <i class="fas fa-ticket-alt me-2"></i> Reserve Seat
+          </button>
+        </div>
+
+      </div>
+
+
+      <!-- Sidebar -->
+      <div class="col-lg-4">
+        <div class="ps-lg-4">
+          <!-- Ticket Information -->
+          <div class="card ticket-status-card mb-4">
+            <div class="card-body">
+              <h4 class="card-title">Ticket Information</h4>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-1">
+                  <span>Available Tickets:</span>
+                  <span class="fw-bold">263/500</span>
+                </div>
+                <div class="progress ticket-progress">
+                  <div class="progress-bar bg-success" role="progressbar" style="width: 47%" aria-valuenow="47"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <span>Price:</span>
+                  <span class="fw-bold">$49.99</span>
+                </div>
+              </div>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between">
+                  <span>Sale Ends:</span>
+                  <span class="fw-bold">June 14, 2025</span>
+                </div>
+              </div>
+              <button class="btn btn-light w-100" data-bs-toggle="modal" data-bs-target="#bookTicketModal">
+                <i class="fas fa-ticket-alt me-2"></i> Book Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Organizer Information -->
+          <div class="card mb-4">
+            <div class="card-body">
+              <h4 class="card-title">Organizer</h4>
+              <div class="d-flex align-items-center mb-3">
+                <img src="static/img/organizer.jpg" class="rounded-circle me-3" style="width: 60px; height: 60px;"
+                  alt="Organizer">
+                <div>
+                  <h5 class="mb-0">City Events Productions</h5>
+                  <p class="text-muted mb-0">Premier Event Organizer</p>
+                </div>
+              </div>
+              <p class="mb-3">Organizing quality events since 2015. Specialists in music festivals and cultural
+                gatherings.</p>
+              <a href="contact-us.html" class="btn btn-light w-100">
+                <i class="fas fa-envelope me-2"></i> Contact Organizer
+              </a>
+            </div>
+          </div>
+
+          <!-- Share Event -->
+          <div class="card">
+            <div class="card-body">
+              <h4 class="card-title">Share Event</h4>
+              <p class="text-muted">Help us spread the word about this event!</p>
+              <div class="d-flex justify-content-center mt-4">
+                <a href="#" class="text-blue me-3"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-cyan me-3"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-red me-3"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-blue me-3"><i class="fab fa-linkedin-in"></i></a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Book Ticket Modal -->
+  <div class="modal fade" id="bookTicketModal" tabindex="-1" aria-labelledby="bookTicketModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="bookTicketModalLabel">Book Tickets</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex mb-4">
+            <img src="/api/placeholder/150/150" alt="Event" class="img-thumbnail me-3"
+              style="width: 100px; height: 100px; object-fit: cover;">
+            <div>
+              <h5>Manage Your Seminars</h5>
+              <p class="small text-muted mb-0">May 22, 2025 at  9:00</p>
+              <p class="small text-muted">Convention Centre</p>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ticketQuantity" class="form-label">Number of Tickets</label>
+            <input type="number" class="form-control" id="ticketQuantity" min="1" max="10" value="1">
+            <div class="form-text">Maximum available: 263 tickets</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="ticketType" class="form-label">Ticket Type</label>
+            <select class="form-select" id="ticketType">
+              <option value="general">General Admission - $49.99</option>
+              <option value="vip">VIP Access - $99.99</option>
+              <option value="backstage">Backstage Pass - $149.99</option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="attendeeEmail" class="form-label">Email</label>
+            <input type="email" class="form-control" id="attendeeEmail" placeholder="your@email.com">
+          </div>
+
+          <div class="alert alert-info">
+            <div class="d-flex">
+              <div class="me-3">
+                <i class="fas fa-info-circle fa-lg"></i>
+              </div>
+              <div>
+                <strong>Note:</strong> Tickets are non-refundable, but can be transferred to another person up to 48
+                hours before the event.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-light">Confirm Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Update Event Modal -->
+  <div class="modal fade" id="updateEventModal" tabindex="-1" aria-labelledby="updateEventModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateEventModalLabel">Update Event</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="updateEventName" class="form-label">Event Name</label>
+                <input type="text" class="form-control" id="updateEventName" value="Seminar Event">
+              </div>
+              <div class="col-md-6">
+                <label for="updateEventCategory" class="form-label">Category</label>
+                <select class="form-select" id="updateEventCategory">
+                  <option value="music" selected>Music</option>
+                  <option value="business">Business</option>
+                  <option value="tech">Technology</option>
+                  <option value="arts">Arts</option>
+                  <option value="sports">Sports</option>
+                  <option value="food">Food & Drink</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="updateEventDate" class="form-label">Date</label>
+                <input type="date" class="form-control" id="updateEventDate" value="2025-06-15">
+              </div>
+              <div class="col-md-6">
+                <label for="updateEventTime" class="form-label">Time</label>
+                <input type="time" class="form-control" id="updateEventTime" value="18:00">
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateEventVenue" class="form-label">Venue</label>
+              <input type="text" class="form-control" id="updateEventVenue" value="Central Park">
+            </div>
+
+            <div class="mb-3">
+              <label for="updateEventAddress" class="form-label">Address</label>
+              <input type="text" class="form-control" id="updateEventAddress"
+                value="59th St to 110th St, New York, NY 10022">
+            </div>
+
+            <div class="mb-3">
+              <label for="updateEventDescription" class="form-label">Description</label>
+              <textarea class="form-control" id="updateEventDescription"
+                rows="4">Join us for the biggest summer event of the year! Featuring top artists from around the world, this event promises an unforgettable experience for music lovers of all genres.</textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="updateEventImages" class="form-label">Event Images</label>
+              <input type="file" class="form-control" id="updateEventImages" multiple>
+              <div class="form-text">You can upload up to 10 images (max 2MB each)</div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="updateEventPrice" class="form-label">Ticket Price ($)</label>
+                <input type="number" class="form-control" id="updateEventPrice" value="49.99" step="0.01">
+              </div>
+              <div class="col-md-6">
+                <label for="updateEventCapacity" class="form-label">Capacity</label>
+                <input type="number" class="form-control" id="updateEventCapacity" value="500">
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-light">Update Event</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer" style="background-color: #114c86; padding: 20px 0;">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 mb-4 mb-md-0">
+          <h4 class="footer-heading">Manage Your Seminars</h4>
+          <div class="mt-4">
+            <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+          <h5 class="footer-heading">Contact Info</h5>
+          <ul class="footer-links">
+            <li><i class="fas fa-map-marker-alt me-2"></i> 123 Event Street, City</li>
+            <li><i class="fas fa-phone me-2"></i> (123) 456-7890</li>
+            <li><i class="fas fa-envelope me-2"></i> info@eventsystem.com</li>
+          </ul>
+        </div>
+      </div>
+      <div class="text-center footer-bottom">
+        <p class="mb-0">&copy; 2025 Manage Your Seminars. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
